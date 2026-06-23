@@ -14,9 +14,10 @@ const taskToRow = (t, ownerId) => ({
   owner_id: ownerId,
 });
 
-const portfolioFromRow = (r) => ({ id: r.id, name: r.name, accent: r.accent });
+const portfolioFromRow = (r) => ({ id: r.id, name: r.name, accent: r.accent, logoUrl: r.logo_url || null });
 const portfolioToRow = (p, ownerId, order) => ({
-  id: p.id, name: p.name, accent: p.accent, sort_order: order ?? 0, owner_id: ownerId,
+  id: p.id, name: p.name, accent: p.accent, sort_order: order ?? 0,
+  logo_url: p.logoUrl ?? null, owner_id: ownerId,
 });
 
 const eventFromRow = (r) => ({
@@ -109,6 +110,32 @@ export function useStore(session) {
     await supabase.from("portfolios").delete().eq("id", id);
   };
 
+  // Upload an image file for a portfolio logo, store its public URL.
+  const setPortfolioLogo = async (id, file) => {
+    if (!file) return;
+    const ext = (file.name.split(".").pop() || "png").toLowerCase();
+    const path = `${ownerId}/${id}-${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from("logos")
+      .upload(path, file, { upsert: true, cacheControl: "3600" });
+    if (upErr) { console.error("Logo upload failed:", upErr.message); return; }
+    const { data: pub } = supabase.storage.from("logos").getPublicUrl(path);
+    const logoUrl = pub?.publicUrl || null;
+    patchLocal((d) => ({
+      ...d,
+      portfolios: d.portfolios.map((p) => (p.id === id ? { ...p, logoUrl } : p)),
+    }));
+    await supabase.from("portfolios").update({ logo_url: logoUrl }).eq("id", id);
+  };
+
+  const clearPortfolioLogo = async (id) => {
+    patchLocal((d) => ({
+      ...d,
+      portfolios: d.portfolios.map((p) => (p.id === id ? { ...p, logoUrl: null } : p)),
+    }));
+    await supabase.from("portfolios").update({ logo_url: null }).eq("id", id);
+  };
+
   // ---- event ops -----------------------------------------------
   const addEvent = async (e) => {
     patchLocal((d) => ({ ...d, events: [...d.events, e] }));
@@ -128,7 +155,7 @@ export function useStore(session) {
   return {
     data, loaded, reload: load,
     addTask, updateTask, removeTask,
-    addPortfolio, removePortfolio,
+    addPortfolio, removePortfolio, setPortfolioLogo, clearPortfolioLogo,
     addEvent, updateEvent, removeEvent,
   };
 }
