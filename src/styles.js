@@ -153,12 +153,14 @@ const S = {
   tabBtn: { display: "inline-flex", alignItems: "center", gap: 7, border: "none", background: "transparent", color: "#94A3B8", fontWeight: 800, fontSize: 15, padding: "10px 22px", borderRadius: 12, cursor: "pointer", fontFamily: FONT },
   tabOn: { background: "linear-gradient(135deg,#FF2D78,#7C3AED)", color: "#fff", boxShadow: "0 8px 22px -8px #FF2D78cc" },
   tabOnAlt: { background: "linear-gradient(135deg,#14B8A6,#22D3EE)", color: "#06231F", boxShadow: "0 8px 22px -8px #14B8A6cc" },
+  tabOnShop: { background: "linear-gradient(135deg,#84CC16,#BEF264)", color: "#1A2E03", boxShadow: "0 8px 22px -8px #84CC16cc" },
   tabCount: { fontSize: 12, fontWeight: 800, background: "rgba(0,0,0,.22)", borderRadius: 7, padding: "1px 7px" },
   signOut: { border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.04)", color: "#94A3B8", fontWeight: 700, fontSize: 13, padding: "8px 14px", borderRadius: 12, cursor: "pointer", fontFamily: FONT, whiteSpace: "nowrap" },
 
   schedule: { maxWidth: 1600, margin: "20px auto 0", padding: "0 20px 60px" },
 
   shop: { maxWidth: 620, margin: "0 auto", padding: "8px 20px 60px" },
+  shopLoading: { textAlign: "center", padding: "80px 20px", color: "#BEF264", fontWeight: 800, letterSpacing: ".2em", fontSize: 13 },
   shopH1: { margin: "6px 0 0", fontSize: "clamp(28px, 7vw, 38px)", fontWeight: 800, letterSpacing: "-.02em", lineHeight: 1 },
   shopSub: { fontSize: 14, color: "#94A3B8", marginTop: 8, fontWeight: 600 },
   shopAddRow: { display: "flex", gap: 8, marginTop: 20 },
