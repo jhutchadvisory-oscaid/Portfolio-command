@@ -1,0 +1,14 @@
+{
+  "name": "Portfolio Command",
+  "short_name": "Portfolio",
+  "description": "Cross-portfolio task dashboard and schedule",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070A18",
+  "theme_color": "#070A18",
+  "icons": [
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}
