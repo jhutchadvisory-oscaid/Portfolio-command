@@ -2,11 +2,14 @@ import { useState, useMemo } from "react";
 import { usePublicSchedule } from "./useStore";
 import { S, CSS } from "./styles.js";
 import { ymd, addDays, startOfWeek, DOW, fmtTime, useIsMobile } from "./shared.js";
+import { ShoppingListBody } from "./ShoppingList.jsx";
 
-// A calm, read-only week view of away-days. No login, no editing.
+// A calm, read-only week view of away-days, plus the shared shopping list.
+// No login, no editing of the schedule.
 export default function PublicSchedule() {
   const events = usePublicSchedule();
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
+  const [pubTab, setPubTab] = useState("schedule"); // schedule | shopping
   const isMobile = useIsMobile();
 
   const days = useMemo(
@@ -46,6 +49,27 @@ export default function PublicSchedule() {
   return (
     <div style={S.app}>
       <style>{CSS}</style>
+
+      <div style={S.tabBarWrap}>
+        <div style={S.tabBarRow}>
+          <div style={S.tabBar}>
+            <button
+              className="tabBtn"
+              style={{ ...S.tabBtn, ...(pubTab === "schedule" ? S.tabOnAlt : {}) }}
+              onClick={() => setPubTab("schedule")}
+            >Schedule</button>
+            <button
+              className="tabBtn"
+              style={{ ...S.tabBtn, ...(pubTab === "shopping" ? S.tabOnShop : {}) }}
+              onClick={() => setPubTab("shopping")}
+            >Shopping</button>
+          </div>
+        </div>
+      </div>
+
+      {pubTab === "shopping" ? (
+        <ShoppingListBody />
+      ) : (
       <div style={S.schedule}>
         <div style={S.schedHeadRow}>
           <div>
@@ -116,6 +140,7 @@ export default function PublicSchedule() {
           <span style={S.legendHint}>Read-only view. Scroll weeks with the arrows.</span>
         </div>
       </div>
+      )}
     </div>
   );
 }
