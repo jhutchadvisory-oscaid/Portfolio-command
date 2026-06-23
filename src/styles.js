@@ -178,6 +178,15 @@ const S = {
   evtAway: { fontSize: 9, fontWeight: 900, letterSpacing: ".14em", marginTop: 3, opacity: 0.92 },
   dayAdd: { marginTop: 8, border: "1px dashed rgba(255,255,255,.18)", background: "transparent", color: "#7C8BA8", fontSize: 18, fontWeight: 600, borderRadius: 11, padding: "5px 0", cursor: "pointer", fontFamily: FONT, lineHeight: 1 },
 
+  // --- mobile vertical stack (whole week scrolls down) ---
+  weekStack: { paddingBottom: 8 },
+  weekCol: { display: "flex", flexDirection: "column", gap: 10 },
+  dayRow: { position: "relative", background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 16, padding: 14, display: "flex", flexDirection: "column", gap: 10 },
+  dayHeadRow: { display: "flex", justifyContent: "space-between", alignItems: "center" },
+  dayHeadRowInner: { display: "flex", alignItems: "baseline", gap: 10 },
+  dayBodyRow: { display: "flex", flexDirection: "column", gap: 8 },
+  dayAddRow: { border: "1px dashed rgba(255,255,255,.18)", background: "transparent", color: "#7C8BA8", fontSize: 16, fontWeight: 700, borderRadius: 11, padding: "9px 0", cursor: "pointer", fontFamily: FONT, lineHeight: 1 },
+
   legend: { display: "flex", alignItems: "center", gap: 18, marginTop: 18, flexWrap: "wrap" },
   legendItem: { display: "inline-flex", alignItems: "center", gap: 7, fontSize: 13, fontWeight: 700, color: "#CBD5E1" },
   legendDot: { width: 14, height: 14, borderRadius: 5 },
