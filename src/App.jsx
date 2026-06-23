@@ -5,6 +5,7 @@ import {
   ymd, addDays, startOfWeek, DOW, fmtTime,
 } from "./shared.js";
 import { S, CSS } from "./styles.js";
+import { ShoppingListBody } from "./ShoppingList.jsx";
 
 export default function App({ store, session, onSignOut }) {
   const { data, loaded } = store;
@@ -64,7 +65,7 @@ export default function App({ store, session, onSignOut }) {
 
       <TabBar tab={tab} setTab={setTab} taskCount={summary(data.tasks).open} onSignOut={onSignOut} />
 
-      {tab === "tasks" ? (
+      {tab === "tasks" && (
         <>
           <Header
             view={view} setView={setView}
@@ -104,7 +105,9 @@ export default function App({ store, session, onSignOut }) {
 
           <button style={S.fab} className="fab" onClick={() => setAdding(true)} aria-label="Add task">+</button>
         </>
-      ) : (
+      )}
+
+      {tab === "schedule" && (
         <ScheduleView
           events={data.events || []}
           onAdd={addEvent}
@@ -112,6 +115,8 @@ export default function App({ store, session, onSignOut }) {
           onRemove={removeEvent}
         />
       )}
+
+      {tab === "shopping" && <ShoppingView />}
 
       {adding && (
         <AddTask
@@ -984,9 +989,27 @@ function TabBar({ tab, setTab, taskCount, onSignOut }) {
           >
             Schedule
           </button>
+          <button
+            className="tabBtn"
+            style={{ ...S.tabBtn, ...(tab === "shopping" ? S.tabOnShop : {}) }}
+            onClick={() => setTab("shopping")}
+          >
+            Shopping
+          </button>
         </div>
       </div>
     </div>
+  );
+}
+
+// ================================================================
+//  SHOPPING VIEW  — the shared list, inside the dashboard tab
+// ================================================================
+function ShoppingView() {
+  return (
+    <main style={S.main}>
+      <ShoppingListBody />
+    </main>
   );
 }
 
