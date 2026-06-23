@@ -44,7 +44,7 @@ const S = {
   chipKill: { position: "absolute", top: -7, right: -7, width: 20, height: 20, borderRadius: "50%", border: "2px solid #070A18", background: "#FF2D78", color: "#fff", fontSize: 13, lineHeight: 1, cursor: "pointer", display: "grid", placeItems: "center", padding: 0 },
   ghostChip: { padding: "9px 15px", borderRadius: 13, border: "1px dashed rgba(255,255,255,.22)", background: "transparent", color: "#94A3B8", fontWeight: 700, fontSize: 14, cursor: "pointer", whiteSpace: "nowrap", fontFamily: FONT },
   addChip: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,.06)", borderRadius: 13, padding: 4, border: "1px solid rgba(255,255,255,.12)" },
-  addChipInput: { background: "transparent", border: "none", outline: "none", color: "#fff", fontSize: 14, fontWeight: 600, padding: "5px 8px", width: 100, fontFamily: FONT },
+  addChipInput: { background: "transparent", border: "none", outline: "none", color: "#fff", fontSize: 16, fontWeight: 600, padding: "5px 8px", width: 100, fontFamily: FONT },
   addChipGo: { border: "none", background: "linear-gradient(135deg,#84CC16,#BEF264)", color: "#1A2E03", fontWeight: 800, fontSize: 13, padding: "6px 12px", borderRadius: 10, cursor: "pointer", fontFamily: FONT },
   manageBtn: { border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.04)", color: "#94A3B8", fontWeight: 700, fontSize: 13, padding: "9px 14px", borderRadius: 12, cursor: "pointer", fontFamily: FONT, whiteSpace: "nowrap" },
   manageOn: { background: "linear-gradient(135deg,#FF2D78,#FB5607)", color: "#fff", borderColor: "transparent" },
@@ -103,9 +103,9 @@ const S = {
   pickRow: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 18 },
   pick: { border: "1px solid", borderRadius: 11, padding: "8px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: FONT },
   dueRow: { display: "flex", gap: 12, alignItems: "flex-end", marginBottom: 18 },
-  dateInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 14, fontFamily: FONT, colorScheme: "dark" },
+  dateInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 16, fontFamily: FONT, colorScheme: "dark" },
   noteAdd: { border: "1px dashed rgba(255,255,255,.22)", background: "transparent", color: "#94A3B8", fontWeight: 700, fontSize: 13, padding: "11px 16px", borderRadius: 12, cursor: "pointer", fontFamily: FONT, whiteSpace: "nowrap" },
-  noteInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 14, fontFamily: FONT, resize: "vertical", outline: "none", marginBottom: 18 },
+  noteInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 16, fontFamily: FONT, resize: "vertical", outline: "none", marginBottom: 18 },
   modalActions: { display: "flex", gap: 10, marginTop: 4 },
   cancelBtn: { flex: 1, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.04)", color: "#CBD5E1", fontWeight: 700, fontSize: 14, padding: "13px", borderRadius: 13, cursor: "pointer", fontFamily: FONT },
   saveBtn: { flex: 2, border: "none", background: "linear-gradient(135deg,#FF2D78,#7C3AED)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "13px", borderRadius: 13, cursor: "pointer", fontFamily: FONT, boxShadow: "0 12px 28px -10px #FF2D78" },
@@ -126,14 +126,14 @@ const S = {
   mcChip: { border: "1px solid", borderRadius: 13, padding: "11px 16px", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: FONT },
   mcChipGhost: { border: "1px dashed rgba(255,255,255,.25)", background: "transparent", color: "#94A3B8", borderRadius: 13, padding: "11px 16px", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: FONT },
   mcAddP: { display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,.06)", borderRadius: 13, padding: 5, border: "1px solid rgba(255,255,255,.12)" },
-  mcAddPInput: { background: "transparent", border: "none", outline: "none", color: "#fff", fontSize: 15, fontWeight: 600, padding: "6px 8px", width: 96, fontFamily: FONT },
+  mcAddPInput: { background: "transparent", border: "none", outline: "none", color: "#fff", fontSize: 16, fontWeight: 600, padding: "6px 8px", width: 96, fontFamily: FONT },
   mcMore: { marginTop: 18, border: "1px dashed rgba(255,255,255,.22)", background: "transparent", color: "#94A3B8", fontWeight: 700, fontSize: 14, padding: "12px", borderRadius: 13, cursor: "pointer", fontFamily: FONT, width: "100%" },
   mcMoreWrap: { marginTop: 18 },
   mcDate: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 13, padding: "13px 14px", color: "#fff", fontSize: 16, fontFamily: FONT, colorScheme: "dark" },
   mcSave: { border: "none", background: "linear-gradient(135deg,#FF2D78,#7C3AED)", color: "#fff", fontWeight: 800, fontSize: 17, padding: "17px", borderRadius: 16, cursor: "pointer", fontFamily: FONT, boxShadow: "0 14px 30px -10px #FF2D78", position: "sticky", bottom: 16 },
   mcFlash: { textAlign: "center", fontSize: 13, fontWeight: 600, color: "#4ADE80" },
 
-  forInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 15, fontWeight: 600, outline: "none", fontFamily: FONT, marginBottom: 18 },
+  forInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 16, fontWeight: 600, outline: "none", fontFamily: FONT, marginBottom: 18 },
   filterBar: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 22, padding: "12px 14px", background: "rgba(255,255,255,.025)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 16 },
   filterLabel: { fontSize: 11, fontWeight: 800, letterSpacing: ".12em", textTransform: "uppercase", color: "#64748B", marginRight: 2 },
   filterChip: { border: "1px solid", borderRadius: 10, padding: "6px 13px", fontSize: 13, cursor: "pointer", fontFamily: FONT },
@@ -196,7 +196,12 @@ const S = {
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
-  * { -webkit-tap-highlight-color: transparent; }
+  :root { color-scheme: dark; }
+  html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; -webkit-text-size-adjust: 100%; background: #070A18; color: #E8ECF4; }
+  #root { width: 100%; min-height: 100vh; min-height: 100dvh; }
+  /* iOS Safari zooms in when you focus an input under 16px — force 16px on touch inputs to stop it */
+  input, textarea, select { font-size: 16px; }
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
   ::-webkit-scrollbar { height: 7px; width: 7px; }
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 4px; }
   .taskCard:hover { transform: translateY(-2px); background: rgba(255,255,255,.07) !important; }
