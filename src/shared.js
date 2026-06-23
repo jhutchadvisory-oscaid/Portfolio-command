@@ -81,3 +81,45 @@ export const fmtTime = (t) => {
   const am = h < 12; const h12 = h % 12 === 0 ? 12 : h % 12;
   return `${h12}${m ? ":" + String(m).padStart(2,"0") : ""}${am ? "am" : "pm"}`;
 };
+
+// ---- shopping categories ----------------------------------------
+// A free, offline keyword map. Order matters: the first category whose
+// keyword appears in the item name wins, so list more specific terms first.
+// Matching is substring-based and case-insensitive, so "yoghurts",
+// "greek yoghurt" and "yog" all match "yog".
+export const SHOP_CATEGORIES = [
+  { key: "fruitveg", label: "Fruit & veg", keywords: [
+    "apple","banana","orange","lemon","lime","grape","berry","berries","strawberr","raspberr","blueberr","melon","pineapple","mango","peach","pear","plum","kiwi","avocado","tomato","potato","onion","garlic","carrot","broccoli","cauliflower","spinach","lettuce","salad","cucumber","pepper","courgette","aubergine","mushroom","celery","leek","cabbage","sprout","bean","pea","corn","sweetcorn","squash","pumpkin","ginger","herb","basil","coriander","parsley","mint","veg","fruit","banan" ] },
+  { key: "dairy", label: "Dairy & eggs", keywords: [
+    "milk","cheese","yog","yoghurt","yogurt","butter","cream","creme","custard","egg","margarine","brie","cheddar","mozzarella","parmesan","feta","halloumi","quark","kefir","oatly","almond milk","soy milk" ] },
+  { key: "meatfish", label: "Meat & fish", keywords: [
+    "chicken","beef","mince","pork","lamb","bacon","sausage","ham","turkey","steak","fish","salmon","tuna","cod","haddock","prawn","shrimp","mackerel","sardine","duck","gammon","chorizo","salami","pepperoni","meat" ] },
+  { key: "bakery", label: "Bakery", keywords: [
+    "bread","loaf","roll","bagel","baguette","sourdough","croissant","bun","wrap","tortilla","pitta","naan","muffin","cake","crumpet","brioche","pastry","scone","doughnut","donut" ] },
+  { key: "frozen", label: "Frozen", keywords: [
+    "frozen","ice cream","ice-cream","lolly","peas frozen","chips","fish finger","waffle" ] },
+  { key: "pantry", label: "Cupboard & dry", keywords: [
+    "pasta","rice","noodle","flour","sugar","salt","oil","vinegar","sauce","ketchup","mayo","mustard","beans","lentil","chickpea","tin","tinned","can ","soup","stock","spice","seasoning","cereal","oats","porridge","granola","honey","jam","peanut butter","nutella","spread","biscuit","cracker","crisp","snack","nut","raisin","chocolate","sweet","crackers","tea","coffee","cocoa","gravy","curry","couscous","quinoa","tomato paste","passata","coconut milk" ] },
+  { key: "drinks", label: "Drinks", keywords: [
+    "water","juice","squash","cordial","fizzy","cola","coke","lemonade","soda","beer","wine","lager","cider","gin","vodka","whisky","spirit","drink","smoothie","kombucha","tonic" ] },
+  { key: "household", label: "Household", keywords: [
+    "bin bag","bin liner","kitchen roll","toilet roll","loo roll","tissue","washing","detergent","fabric","softener","cleaner","bleach","spray","sponge","cloth","foil","clingfilm","cling film","baking paper","battery","batteries","bulb","candle","matches","washing up","dishwasher","tablet" ] },
+  { key: "toiletries", label: "Toiletries & health", keywords: [
+    "shampoo","conditioner","soap","shower gel","toothpaste","toothbrush","deodorant","razor","shaving","moisturiser","sun cream","suncream","plaster","paracetamol","ibuprofen","vitamin","tampon","sanitary","nappy","nappies","wipe","cotton","floss","mouthwash","tissues" ] },
+  { key: "baby", label: "Baby & kids", keywords: [
+    "formula","baby food","puree","rusk" ] },
+];
+
+export function categorise(name) {
+  const n = (name || "").toLowerCase();
+  for (const cat of SHOP_CATEGORIES) {
+    if (cat.keywords.some((k) => n.includes(k))) return cat;
+  }
+  return { key: "other", label: "Other", keywords: [] };
+}
+
+// Category display order (matches SHOP_CATEGORIES, with Other always last).
+export const SHOP_CATEGORY_ORDER = [
+  ...SHOP_CATEGORIES.map((c) => c.key),
+  "other",
+];
