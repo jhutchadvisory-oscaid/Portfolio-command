@@ -179,3 +179,52 @@ export function usePublicSchedule() {
   }, []);
   return events;
 }
+
+// ============================================================
+//  useShoppingList — shared, no-login household shopping list
+//  Open read/write via the public_all_shopping policy.
+// ============================================================
+export function useShoppingList() {
+  const [items, setItems] = useState(null);
+
+  const load = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("shopping_items")
+      .select("*")
+      .order("created_at", { ascending: true });
+    setItems(error ? [] : (data || []));
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const addItem = async (name) => {
+    const v = (name || "").trim();
+    if (!v) return;
+    const item = { id: uid("s"), name: v, checked: false };
+    setItems((arr) => [...(arr || []), { ...item, created_at: new Date().toISOString() }]);
+    await supabase.from("shopping_items").insert(item);
+  };
+
+  const toggleItem = async (id, checked) => {
+    setItems((arr) => arr.map((i) => (i.id === id ? { ...i, checked } : i)));
+    await supabase.from("shopping_items").update({ checked }).eq("id", id);
+  };
+
+  const removeItem = async (id) => {
+    setItems((arr) => arr.filter((i) => i.id !== id));
+    await supabase.from("shopping_items").delete().eq("id", id);
+  };
+
+  const clearChecked = async () => {
+    setItems((arr) => arr.filter((i) => !i.checked));
+    await supabase.from("shopping_items").delete().eq("checked", true);
+  };
+
+  const clearAll = async () => {
+    setItems([]);
+    // delete every row (the filter matches all real ids)
+    await supabase.from("shopping_items").delete().neq("id", "");
+  };
+
+  return { items, reload: load, addItem, toggleItem, removeItem, clearChecked, clearAll };
+}
