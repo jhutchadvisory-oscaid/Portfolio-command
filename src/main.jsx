@@ -7,6 +7,7 @@ import { S, CSS } from "./styles.js";
 import App from "./App.jsx";
 import Login from "./Login.jsx";
 import PublicSchedule from "./PublicSchedule.jsx";
+import ShoppingList from "./ShoppingList.jsx";
 
 function Loading() {
   return (
@@ -50,6 +51,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/schedule" element={<PublicSchedule />} />
+        <Route path="/list" element={<ShoppingList />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
