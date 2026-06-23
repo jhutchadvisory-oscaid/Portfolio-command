@@ -962,26 +962,30 @@ function MobileCapture({ portfolios, tasks, onSave, onAddPortfolio, onOpenBoard 
 function TabBar({ tab, setTab, taskCount, onSignOut }) {
   return (
     <div style={S.tabBarWrap}>
-      <div style={S.tabBar}>
-        <button
-          className="tabBtn"
-          style={{ ...S.tabBtn, ...(tab === "tasks" ? S.tabOn : {}) }}
-          onClick={() => setTab("tasks")}
-        >
-          Tasks
-          {taskCount > 0 && <span style={S.tabCount}>{taskCount}</span>}
-        </button>
-        <button
-          className="tabBtn"
-          style={{ ...S.tabBtn, ...(tab === "schedule" ? S.tabOnAlt : {}) }}
-          onClick={() => setTab("schedule")}
-        >
-          Schedule
-        </button>
-      </div>
       {onSignOut && (
-        <button style={S.signOut} className="manageBtn" onClick={onSignOut} aria-label="Sign out">Sign out</button>
+        <div style={S.signOutRow}>
+          <button style={S.signOut} className="manageBtn" onClick={onSignOut} aria-label="Sign out">Sign out</button>
+        </div>
       )}
+      <div style={S.tabBarRow}>
+        <div style={S.tabBar}>
+          <button
+            className="tabBtn"
+            style={{ ...S.tabBtn, ...(tab === "tasks" ? S.tabOn : {}) }}
+            onClick={() => setTab("tasks")}
+          >
+            Tasks
+            {taskCount > 0 && <span style={S.tabCount}>{taskCount}</span>}
+          </button>
+          <button
+            className="tabBtn"
+            style={{ ...S.tabBtn, ...(tab === "schedule" ? S.tabOnAlt : {}) }}
+            onClick={() => setTab("schedule")}
+          >
+            Schedule
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
