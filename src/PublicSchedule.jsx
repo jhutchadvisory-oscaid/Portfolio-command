@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { usePublicSchedule } from "./useStore";
 import { S, CSS } from "./styles.js";
-import { ymd, addDays, startOfWeek, DOW, fmtTime } from "./shared.js";
+import { ymd, addDays, startOfWeek, DOW, fmtTime, useIsMobile } from "./shared.js";
 
 // A calm, read-only week view of away-days. No login, no editing.
 export default function PublicSchedule() {
   const events = usePublicSchedule();
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
+  const isMobile = useIsMobile();
 
   const days = useMemo(
     () => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)),
@@ -63,8 +64,8 @@ export default function PublicSchedule() {
 
         <div style={S.rangeLabel}>{rangeLabel()}</div>
 
-        <div style={S.weekScroll}>
-          <div style={S.week}>
+        <div style={isMobile ? S.weekStack : S.weekScroll}>
+          <div style={isMobile ? S.weekCol : S.week}>
             {days.map((d, i) => {
               const key = ymd(d);
               const list = eventsByDay[key] || [];
@@ -74,20 +75,20 @@ export default function PublicSchedule() {
                 <div
                   key={key}
                   style={{
-                    ...S.day,
+                    ...(isMobile ? S.dayRow : S.day),
                     ...(isToday ? S.dayToday : {}),
                     ...(isWeekend && !isToday ? S.dayWeekend : {}),
                   }}
                 >
-                  <div style={S.dayHead}>
-                    <div>
+                  <div style={isMobile ? S.dayHeadRow : S.dayHead}>
+                    <div style={isMobile ? S.dayHeadRowInner : undefined}>
                       <div style={{ ...S.dayName, color: isToday ? "#FF6B9D" : "#7C8BA8" }}>{DOW[i]}</div>
                       <div style={{ ...S.dayNum, color: isToday ? "#fff" : "#E8ECF4" }}>{d.getDate()}</div>
                     </div>
                     {isToday && <span style={S.todayDot}>now</span>}
                   </div>
 
-                  <div style={S.dayBody}>
+                  <div style={isMobile ? S.dayBodyRow : S.dayBody}>
                     {list.length === 0 && <div style={S.dayEmpty}>—</div>}
                     {list.map(e => (
                       <div
