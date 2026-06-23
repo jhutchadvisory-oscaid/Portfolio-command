@@ -19,7 +19,9 @@ function Loading() {
 }
 
 // The owner-only dashboard, gated behind auth.
-function Dashboard() {
+// Logged-out visitors at "/" are sent to the shared schedule (the guest view).
+// The owner signs in via the dedicated /login route.
+function Dashboard({ requireLogin = false }) {
   const [session, setSession] = useState(undefined); // undefined = checking
   const store = useStore(session);
 
@@ -29,10 +31,18 @@ function Dashboard() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const signOut = () => supabase.auth.signOut();
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    window.location.assign("/login");
+  };
 
   if (session === undefined) return <Loading />;
-  if (!session) return <Login />;
+
+  if (!session) {
+    // On /login, show the sign-in screen. Anywhere else, a logged-out
+    // visitor is a guest — send them straight to the shared schedule.
+    return requireLogin ? <Login /> : <Navigate to="/schedule" replace />;
+  }
 
   // Optional guard: if a non-owner email signs in, send them to the read-only page.
   const email = (session.user?.email || "").toLowerCase();
@@ -50,6 +60,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Dashboard requireLogin />} />
         <Route path="/schedule" element={<PublicSchedule />} />
         <Route path="/list" element={<ShoppingList />} />
         <Route path="*" element={<Navigate to="/" replace />} />
