@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { supabase } from "./supabaseClient";
+import { supabase, setRemember } from "./supabaseClient";
 import { S, CSS } from "./styles.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState("password"); // password | magic
+  const [remember, setRememberMe] = useState(true);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
 
   const signIn = async () => {
+    setRemember(remember);
     setBusy(true); setMsg(null);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
@@ -17,6 +19,7 @@ export default function Login() {
   };
 
   const magic = async () => {
+    setRemember(remember);
     setBusy(true); setMsg(null);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
@@ -51,6 +54,27 @@ export default function Login() {
             style={{ ...S.titleInput, fontSize: 16, marginBottom: 12 }}
           />
         )}
+
+        <button
+          type="button"
+          onClick={() => setRememberMe(r => !r)}
+          style={{
+            display: "flex", alignItems: "center", gap: 10, width: "100%",
+            background: "transparent", border: "none", cursor: "pointer",
+            padding: "2px 2px 0", marginBottom: 14, fontFamily: "inherit",
+          }}
+        >
+          <span style={{
+            width: 22, height: 22, borderRadius: 7, flexShrink: 0,
+            display: "grid", placeItems: "center",
+            border: remember ? "none" : "2px solid rgba(255,255,255,.25)",
+            background: remember ? "linear-gradient(135deg,#FF2D78,#7C3AED)" : "transparent",
+            color: "#fff", fontWeight: 900, fontSize: 13,
+          }}>{remember ? "✓" : ""}</span>
+          <span style={{ color: "#94A3B8", fontSize: 14, fontWeight: 600 }}>
+            Keep me signed in on this device
+          </span>
+        </button>
 
         <button
           style={{ ...S.saveBtn, width: "100%", opacity: busy ? 0.6 : 1, marginTop: 4 }}
