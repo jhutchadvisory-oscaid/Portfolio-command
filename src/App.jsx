@@ -10,7 +10,7 @@ export default function App({ store, session, onSignOut }) {
   const { data, loaded } = store;
   const {
     addTask, updateTask, removeTask,
-    addPortfolio: addPortfolioRow, removePortfolio,
+    addPortfolio: addPortfolioRow, removePortfolio, setPortfolioLogo, clearPortfolioLogo,
     addEvent, updateEvent, removeEvent,
   } = store;
 
@@ -79,6 +79,8 @@ export default function App({ store, session, onSignOut }) {
             tasks={data.tasks}
             onAddPortfolio={addPortfolio}
             onRemovePortfolio={removePortfolio}
+            onSetLogo={setPortfolioLogo}
+            onClearLogo={clearPortfolioLogo}
           />
 
           <main style={S.main}>
@@ -189,7 +191,7 @@ function Stat({ n, label, tone }) {
 // ================================================================
 //  PORTFOLIO STRIP
 // ================================================================
-function PortfolioStrip({ portfolios, active, setActive, tasks, onAddPortfolio, onRemovePortfolio }) {
+function PortfolioStrip({ portfolios, active, setActive, tasks, onAddPortfolio, onRemovePortfolio, onSetLogo, onClearLogo }) {
   const [adding, setAdding] = useState(false);
   const [name, setName] = useState("");
   const [manage, setManage] = useState(false);
@@ -203,63 +205,104 @@ function PortfolioStrip({ portfolios, active, setActive, tasks, onAddPortfolio, 
   };
 
   return (
-    <div style={S.strip}>
-      <div style={S.stripScroll}>
-        <Chip
-          label="All" count={tasks.filter(t => t.status !== "done").length}
-          on={active === "all"} accent={{ from: "#1E293B", to: "#334155" }}
-          onClick={() => setActive("all")}
-        />
-        {portfolios.map(p => {
-          const a = ACCENTS[p.accent % ACCENTS.length];
-          return (
-            <div key={p.id} style={{ position: "relative" }} className="chipWrap">
-              <Chip
-                label={p.name} count={openCount(p.id)}
-                on={active === p.id} accent={a}
-                onClick={() => setActive(p.id)}
-              />
-              {manage && (
-                <button
-                  style={S.chipKill} className="chipKill"
-                  onClick={() => {
-                    if (confirm(`Remove ${p.name} and its tasks?`)) {
-                      onRemovePortfolio(p.id);
-                      if (active === p.id) setActive("all");
-                    }
-                  }}
-                  aria-label={`Remove ${p.name}`}
-                >×</button>
-              )}
-            </div>
-          );
-        })}
+    <div style={S.stripWrap}>
+      <div style={S.strip}>
+        <div style={S.stripScroll}>
+          <Chip
+            label="All" count={tasks.filter(t => t.status !== "done").length}
+            on={active === "all"} accent={{ from: "#1E293B", to: "#334155" }}
+            onClick={() => setActive("all")}
+          />
+          {portfolios.map(p => {
+            const a = ACCENTS[p.accent % ACCENTS.length];
+            return (
+              <div key={p.id} style={{ position: "relative" }} className="chipWrap">
+                <Chip
+                  label={p.name} count={openCount(p.id)}
+                  on={active === p.id} accent={a} logoUrl={p.logoUrl}
+                  onClick={() => setActive(p.id)}
+                />
+                {manage && (
+                  <button
+                    style={S.chipKill} className="chipKill"
+                    onClick={() => {
+                      if (confirm(`Remove ${p.name} and its tasks?`)) {
+                        onRemovePortfolio(p.id);
+                        if (active === p.id) setActive("all");
+                      }
+                    }}
+                    aria-label={`Remove ${p.name}`}
+                  >×</button>
+                )}
+              </div>
+            );
+          })}
 
-        {adding ? (
-          <div style={S.addChip}>
-            <input
-              autoFocus value={name}
-              onChange={e => setName(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter") submit(); if (e.key === "Escape") { setAdding(false); setName(""); } }}
-              placeholder="Name…" style={S.addChipInput}
-            />
-            <button style={S.addChipGo} className="addChipGo" onClick={submit}>Add</button>
-          </div>
-        ) : (
-          <button style={S.ghostChip} className="ghostChip" onClick={() => setAdding(true)}>+ Portfolio</button>
-        )}
+          {adding ? (
+            <div style={S.addChip}>
+              <input
+                autoFocus value={name}
+                onChange={e => setName(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") submit(); if (e.key === "Escape") { setAdding(false); setName(""); } }}
+                placeholder="Name…" style={S.addChipInput}
+              />
+              <button style={S.addChipGo} className="addChipGo" onClick={submit}>Add</button>
+            </div>
+          ) : (
+            <button style={S.ghostChip} className="ghostChip" onClick={() => setAdding(true)}>+ Portfolio</button>
+          )}
+        </div>
+
+        <button
+          style={{ ...S.manageBtn, ...(manage ? S.manageOn : {}) }}
+          className="manageBtn"
+          onClick={() => setManage(m => !m)}
+        >{manage ? "Done" : "Manage"}</button>
       </div>
 
-      <button
-        style={{ ...S.manageBtn, ...(manage ? S.manageOn : {}) }}
-        className="manageBtn"
-        onClick={() => setManage(m => !m)}
-      >{manage ? "Done" : "Manage"}</button>
+      {manage && (
+        <div style={S.managePanel}>
+          <div style={S.managePanelTitle}>Portfolio logos</div>
+          <div style={S.logoGrid}>
+            {portfolios.map(p => {
+              const a = ACCENTS[p.accent % ACCENTS.length];
+              return (
+                <div key={p.id} style={S.logoRow}>
+                  <div style={{
+                    ...S.logoPreview,
+                    background: p.logoUrl ? "rgba(255,255,255,.92)" : `linear-gradient(135deg, ${a.from}, ${a.to})`,
+                  }}>
+                    {p.logoUrl
+                      ? <img src={p.logoUrl} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                      : <span style={{ color: "#fff", fontWeight: 800, fontSize: 16 }}>{p.name[0]}</span>}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={S.logoName}>{p.name}</div>
+                    <div style={S.logoActions}>
+                      <label style={S.logoUpload} className="logoUpload">
+                        {p.logoUrl ? "Replace" : "Upload logo"}
+                        <input
+                          type="file" accept="image/*" style={{ display: "none" }}
+                          onChange={e => { const f = e.target.files?.[0]; if (f) onSetLogo(p.id, f); e.target.value = ""; }}
+                        />
+                      </label>
+                      {p.logoUrl && (
+                        <button style={S.logoClear} className="logoClear" onClick={() => onClearLogo(p.id)}>Remove</button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div style={S.manageHint}>Square PNGs with transparent backgrounds look best. They appear as a small mark on every task in that portfolio.</div>
+        </div>
+      )}
     </div>
   );
 }
 
-function Chip({ label, count, on, accent, onClick }) {
+function Chip({ label, count, on, accent, onClick, logoUrl }) {
   return (
     <button
       onClick={onClick}
@@ -272,6 +315,7 @@ function Chip({ label, count, on, accent, onClick }) {
         boxShadow: on ? `0 8px 24px -8px ${accent.from}AA` : "none",
       }}
     >
+      {logoUrl && <img src={logoUrl} alt="" style={S.chipLogo} loading="lazy" />}
       <span>{label}</span>
       <span style={{
         ...S.chipCount,
@@ -487,8 +531,13 @@ function TaskCard({ task, portfolio, accent, showPortfolio, compact, onUpdate, o
       >{isDone ? "✓" : ""}</button>
 
       <div style={{ flex: 1, minWidth: 0, cursor: "pointer" }} onClick={() => onEdit && onEdit(task)}>
-        <div style={{ ...S.cardTitle, textDecoration: isDone ? "line-through" : "none" }}>
-          {task.title}
+        <div style={S.cardTitleRow}>
+          <div style={{ ...S.cardTitle, textDecoration: isDone ? "line-through" : "none" }}>
+            {task.title}
+          </div>
+          {portfolio?.logoUrl && (
+            <img src={portfolio.logoUrl} alt="" style={S.cardLogo} loading="lazy" />
+          )}
         </div>
 
         <div style={S.cardMeta}>
@@ -497,7 +546,10 @@ function TaskCard({ task, portfolio, accent, showPortfolio, compact, onUpdate, o
               ...S.tag,
               background: `linear-gradient(135deg, ${accent.from}22, ${accent.to}22)`,
               color: accent.to, borderColor: `${accent.from}55`,
-            }}>{portfolio.name}</span>
+            }}>
+              {portfolio.logoUrl && <img src={portfolio.logoUrl} alt="" style={S.tagLogo} loading="lazy" />}
+              {portfolio.name}
+            </span>
           )}
           <span style={{ ...S.priTag, background: `${pri.color}1F`, color: pri.color }}>
             {pri.label}
