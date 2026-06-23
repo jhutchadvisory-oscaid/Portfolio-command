@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "./supabaseClient";
+import { uid } from "./shared.js";
 
 // ---- row <-> app mappers ----------------------------------------
 const taskFromRow = (r) => ({
@@ -202,7 +203,12 @@ export function useShoppingList() {
     if (!v) return;
     const item = { id: uid("s"), name: v, checked: false };
     setItems((arr) => [...(arr || []), { ...item, created_at: new Date().toISOString() }]);
-    await supabase.from("shopping_items").insert(item);
+    const { error } = await supabase.from("shopping_items").insert(item);
+    if (error) {
+      console.error("Could not save item:", error.message);
+      alert("Couldn't save that item. The shopping list table may not be set up in Supabase yet.\n\n(" + error.message + ")");
+      setItems((arr) => (arr || []).filter((i) => i.id !== item.id));
+    }
   };
 
   const toggleItem = async (id, checked) => {
