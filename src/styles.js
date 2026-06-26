@@ -113,7 +113,7 @@ const S = {
 
   backToCapture: { display: "block", margin: "20px auto -6px", border: "none", background: "rgba(255,255,255,.06)", color: "#CBD5E1", fontWeight: 700, fontSize: 14, padding: "9px 18px", borderRadius: 12, cursor: "pointer", fontFamily: FONT },
 
-  mc: { minHeight: "100vh", boxSizing: "border-box", padding: "calc(24px + env(safe-area-inset-top, 0px)) 18px 40px", display: "flex", flexDirection: "column", gap: 18 },
+  mc: { minHeight: "100vh", boxSizing: "border-box", padding: "calc(24px + env(safe-area-inset-top, 0px)) 18px calc(40px + env(safe-area-inset-bottom, 0px))", display: "flex", flexDirection: "column", gap: 18 },
   mcTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 },
   mcH1: { margin: "6px 0 0", fontSize: 32, fontWeight: 800, letterSpacing: "-.02em", lineHeight: 1, color: "#F1F5FB" },
   mcBoardBtn: { display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.05)", color: "#E8ECF4", fontWeight: 700, fontSize: 14, padding: "10px 14px", borderRadius: 13, cursor: "pointer", fontFamily: FONT, whiteSpace: "nowrap" },
@@ -131,7 +131,7 @@ const S = {
   mcMore: { marginTop: 18, border: "1px dashed rgba(255,255,255,.22)", background: "transparent", color: "#94A3B8", fontWeight: 700, fontSize: 14, padding: "12px", borderRadius: 13, cursor: "pointer", fontFamily: FONT, width: "100%" },
   mcMoreWrap: { marginTop: 18 },
   mcDate: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 13, padding: "13px 14px", color: "#fff", fontSize: 16, fontFamily: FONT, colorScheme: "dark" },
-  mcSave: { border: "none", background: "linear-gradient(135deg,#FF2D78,#7C3AED)", color: "#fff", fontWeight: 800, fontSize: 17, padding: "17px", borderRadius: 16, cursor: "pointer", fontFamily: FONT, boxShadow: "0 14px 30px -10px #FF2D78", position: "sticky", bottom: 16 },
+  mcSave: { border: "none", background: "linear-gradient(135deg,#FF2D78,#7C3AED)", color: "#fff", fontWeight: 800, fontSize: 17, padding: "17px", borderRadius: 16, cursor: "pointer", fontFamily: FONT, boxShadow: "0 14px 30px -10px #FF2D78", marginTop: 4 },
   mcFlash: { textAlign: "center", fontSize: 13, fontWeight: 600, color: "#4ADE80" },
 
   forInput: { width: "100%", boxSizing: "border-box", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 12, padding: "11px 14px", color: "#fff", fontSize: 16, fontWeight: 600, outline: "none", fontFamily: FONT, marginBottom: 18 },
