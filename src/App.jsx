@@ -642,7 +642,6 @@ function AddTask({ portfolios, defaultPortfolio, existing, onClose, onSave, onDe
   const [effort, setEffort] = useState(existing?.effort || null);
   const [due, setDue] = useState(existing?.due || "");
   const [note, setNote] = useState(existing?.note || "");
-  const [showNote, setShowNote] = useState(!!existing?.note);
 
   const save = () => {
     const v = title.trim();
@@ -675,7 +674,7 @@ function AddTask({ portfolios, defaultPortfolio, existing, onClose, onSave, onDe
         <input
           autoFocus value={title}
           onChange={e => setTitle(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter" && (e.metaKey || !showNote)) save(); }}
+          onKeyDown={e => { if (e.key === "Enter") save(); }}
           placeholder="What needs doing?"
           style={S.titleInput}
         />
@@ -753,20 +752,13 @@ function AddTask({ portfolios, defaultPortfolio, existing, onClose, onSave, onDe
             <label style={S.fieldLabel}>Date <span style={S.optional}>(optional)</span></label>
             <input type="date" value={due} onChange={e => setDue(e.target.value)} style={S.dateInput} />
           </div>
-          {!showNote && (
-            <button style={S.noteAdd} className="noteAdd" onClick={() => setShowNote(true)}>+ Note</button>
-          )}
         </div>
 
-        {showNote && (
-          <>
-            <label style={S.fieldLabel}>Note</label>
-            <textarea
-              value={note} onChange={e => setNote(e.target.value)}
-              placeholder="One line of context…" rows={2} style={S.noteInput}
-            />
-          </>
-        )}
+        <label style={S.fieldLabel}>Additional details <span style={S.optional}>(optional)</span></label>
+        <textarea
+          value={note} onChange={e => setNote(e.target.value)}
+          placeholder="e.g. chat with Sally; build X with Y…" rows={3} style={S.noteInput}
+        />
 
         <div style={S.modalActions}>
           {existing && onDelete ? (
